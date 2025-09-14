@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notaps Unified Language Learning</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>🎯 Notaps Learning</h1>
+            <p class="subtitle">統合語学学習アプリ - デモ版</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tab-nav">
+            <button class="tab-btn" data-tab="dashboard">🏠 ホーム</button>
+            <button class="tab-btn active" data-tab="vocabulary">📚 語彙</button>
+            <button class="tab-btn" data-tab="pronunciation">🎤 発音</button>
+            <button class="tab-btn" data-tab="progress">📊 進捗</button>
+            <button class="tab-btn" data-tab="settings">⚙️ 設定</button>
+        </nav>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content">
+            <!-- Learning Streak & Daily Goal -->
+            <div class="streak-section">
+                <div class="streak-card">
+                    <div class="streak-icon">🔥</div>
+                    <div class="streak-info">
+                        <div class="streak-count" id="streak-days">0</div>
+                        <div class="streak-label">日連続学習中</div>
+                    </div>
+                </div>
+                <div class="daily-goal-card">
+                    <div class="goal-icon">🎯</div>
+                    <div class="goal-info">
+                        <div class="goal-progress" id="daily-progress">0/10</div>
+                        <div class="goal-label">今日の目標</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Languages Section -->
+            <div class="languages-section">
+                <div class="section-header">
+                    <h3>🌍 学習中の言語</h3>
+                    <button class="view-all-btn" onclick="app.showLanguageDetails()">詳細表示</button>
+                </div>
+                <div class="language-cards" id="language-cards">
+                    <!-- Language progress cards will be populated here -->
+                </div>
+            </div>
+
+            <!-- Add New Language CTA -->
+            <div class="add-language-section">
+                <div class="add-language-card" onclick="app.showAddLanguage()">
+                    <div class="add-icon">✨</div>
+                    <div class="add-content">
+                        <h4>新しい言語を始めよう</h4>
+                        <p>100+ 言語で語彙力を向上</p>
+                        <div class="cta-badge">無料で開始</div>
+                    </div>
+                    <div class="arrow-icon">→</div>
+                </div>
+            </div>
+
+            <!-- Premium Features Promotion -->
+            <div class="premium-section" id="premium-section">
+                <div class="premium-card" onclick="app.showPremiumFeatures()">
+                    <div class="premium-badge">👑 Premium</div>
+                    <div class="premium-content">
+                        <h4>学習効率を最大化</h4>
+                        <ul class="premium-features">
+                            <li>📊 詳細な分析レポート</li>
+                            <li>🎯 個人専用学習プラン</li>
+                            <li>🔄 無制限の復習モード</li>
+                            <li>🎤 AI発音コーチ</li>
+                        </ul>
+                        <div class="premium-cta">7日間無料体験</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social & Competition -->
+            <div class="social-section">
+                <div class="section-header">
+                    <h3>🏆 コミュニティ</h3>
+                    <button class="leaderboard-btn" onclick="app.showLeaderboard()">ランキング</button>
+                </div>
+                <div class="social-stats">
+                    <div class="social-card">
+                        <div class="social-icon">🥇</div>
+                        <div class="social-info">
+                            <div class="social-value" id="global-rank">#247</div>
+                            <div class="social-label">世界ランク</div>
+                        </div>
+                    </div>
+                    <div class="social-card">
+                        <div class="social-icon">👥</div>
+                        <div class="social-info">
+                            <div class="social-value" id="friends-count">12</div>
+                            <div class="social-label">学習仲間</div>
+                        </div>
+                    </div>
+                    <div class="social-card">
+                        <div class="social-icon">⚡</div>
+                        <div class="social-info">
+                            <div class="social-value" id="weekly-score">1,247</div>
+                            <div class="social-label">今週のスコア</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="action-grid">
+                    <div class="action-card primary" onclick="app.switchTab('vocabulary')">
+                        <div class="action-icon">📖</div>
+                        <div class="action-title">今すぐ学習</div>
+                        <div class="action-subtitle">スワイプで単語学習</div>
+                    </div>
+                    <div class="action-card" onclick="app.switchTab('pronunciation')">
+                        <div class="action-icon">🎙️</div>
+                        <div class="action-title">発音練習</div>
+                        <div class="action-subtitle">AI音声コーチ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vocabulary Tab -->
+        <div id="vocabulary" class="tab-content active">
+            <div class="section-header" style="display: none;">
+                <h2>語彙学習</h2>
+                <div class="filters">
+                    <select id="language-filter">
+                        <option value="all">全言語</option>
+                        <option value="en">English</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="fr">Français</option>
+                        <option value="zh">中文</option>
+                    </select>
+                    <select id="difficulty-filter">
+                        <option value="all">全レベル</option>
+                        <option value="beginner">初級</option>
+                        <option value="intermediate">中級</option>
+                        <option value="advanced">上級</option>
+                    </select>
+                </div>
+            </div>
+            <div id="vocabulary-list" class="tiktok-vocabulary-container">
+                <!-- TikTok-style vocabulary cards will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Pronunciation Tab -->
+        <div id="pronunciation" class="tab-content">
+            <div class="section-header">
+                <h2>発音練習</h2>
+                <p>テキストを入力して発音を練習してください（デモ版：テキスト入力でのシミュレーション）</p>
+            </div>
+            
+            <div class="pronunciation-practice">
+                <div class="target-word">
+                    <h3>練習単語</h3>
+                    <div id="target-text">hello</div>
+                    <div id="target-pronunciation">/həˈloʊ/</div>
+                    <button onclick="playTargetAudio()" class="play-btn">🔊 聞く</button>
+                </div>
+
+                <div class="practice-area">
+                    <h3>あなたの発音</h3>
+                    <input type="text" id="spoken-input" placeholder="発音した内容を入力してください..." class="speech-input">
+                    <button onclick="analyzePronunciation()" class="analyze-btn">分析する</button>
+                </div>
+
+                <div id="pronunciation-result" class="result-area" style="display: none;">
+                    <h3>発音分析結果</h3>
+                    <div class="result-card">
+                        <div class="accuracy-score" id="accuracy-score">-</div>
+                        <div class="grade" id="pronunciation-grade">-</div>
+                        <div class="feedback" id="pronunciation-feedback">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Tab -->
+        <div id="progress" class="tab-content">
+            <div class="section-header">
+                <h2>学習進捗</h2>
+                <p>あなたの学習統計と成果</p>
+            </div>
+            
+            <div class="progress-overview">
+                <div class="progress-card">
+                    <h3>総合スコア</h3>
+                    <div class="progress-chart">
+                        <div class="chart-bar">
+                            <div class="chart-fill" id="overall-progress" style="width: 0%"></div>
+                        </div>
+                        <div class="chart-label" id="overall-percentage">0%</div>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <h3>発音精度</h3>
+                    <div class="progress-chart">
+                        <div class="chart-bar">
+                            <div class="chart-fill pronunciation" id="pronunciation-progress" style="width: 0%"></div>
+                        </div>
+                        <div class="chart-label" id="pronunciation-percentage">0%</div>
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <h3>語彙習得</h3>
+                    <div class="progress-chart">
+                        <div class="chart-bar">
+                            <div class="chart-fill vocabulary" id="vocabulary-progress" style="width: 0%"></div>
+                        </div>
+                        <div class="chart-label" id="vocabulary-percentage">0%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="study-history">
+                <h3>学習履歴</h3>
+                <div class="history-item">
+                    <div class="history-date">今日</div>
+                    <div class="history-activity">発音練習: 15分</div>
+                    <div class="history-score">85%</div>
+                </div>
+                <div class="history-item">
+                    <div class="history-date">昨日</div>
+                    <div class="history-activity">語彙学習: 20分</div>
+                    <div class="history-score">92%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div id="settings" class="tab-content">
+            <div class="section-header">
+                <h2>設定</h2>
+                <p>アプリの設定とカスタマイズ</p>
+            </div>
+            
+            <div class="settings-group">
+                <h3>音声設定</h3>
+                <div class="setting-item">
+                    <label>音声の速度</label>
+                    <input type="range" id="speech-rate" min="0.5" max="2.0" step="0.1" value="1.0">
+                    <span id="rate-value">1.0x</span>
+                </div>
+                <div class="setting-item">
+                    <label>音声の高さ</label>
+                    <input type="range" id="speech-pitch" min="0.5" max="2.0" step="0.1" value="1.0">
+                    <span id="pitch-value">1.0x</span>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <h3>学習設定</h3>
+                <div class="setting-item">
+                    <label>学習言語</label>
+                    <select id="learning-language">
+                        <option value="en">🇺🇸 English</option>
+                        <option value="ko">🇰🇷 한국어</option>
+                        <option value="fr">🇫🇷 Français</option>
+                        <option value="zh">🇨🇳 中文</option>
+                    </select>
+                    <small>日本語との対訳で表示されます</small>
+                </div>
+                <div class="setting-item">
+                    <label>学習リマインダー</label>
+                    <input type="checkbox" id="daily-reminder" checked>
+                    <span>毎日の学習通知</span>
+                </div>
+            </div>
+
+            <div class="settings-group">
+                <h3>プレミアム機能</h3>
+                <div class="premium-card">
+                    <h4>🌟 Premium版にアップグレード</h4>
+                    <p>無制限の語彙、高度な発音分析、オフライン学習</p>
+                    <button class="premium-btn">アップグレード</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
