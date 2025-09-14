@@ -1,0 +1,26 @@
+{
+  "name": "notaps-unified-language-learning",
+  "version": "1.0.0",
+  "description": "Unified language learning app demo - integrating vocabulary and pronunciation features",
+  "main": "demo/server.js",
+  "scripts": {
+    "start": "node demo/server.js",
+    "dev": "node demo/server.js"
+  },
+  "keywords": [
+    "language",
+    "learning",
+    "pronunciation",
+    "vocabulary",
+    "ios",
+    "swift"
+  ],
+  "author": "Notaps Official",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^22.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "path": "^0.12.7"
+  }
+}
